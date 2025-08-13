@@ -24,7 +24,7 @@ The following **required** functionality is completed:
 - [x] User can **persist messages in memory** during session (no backend storage)
 
 ### Technical Requirements
-- [x] **Flutter 3.22+** targeting Web (using Flutter 3.8.1+)
+- [x] **Flutter 3.22+** targeting Web (using Flutter 3.32.8)
 - [x] **Startable in VS Code** with `flutter run -d chrome`
 - [x] **State management** implemented (Provider pattern)
 - [x] **Default widgets** used (no UI design focus)
