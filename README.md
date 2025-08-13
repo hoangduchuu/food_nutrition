@@ -2,14 +2,6 @@
 
 A Flutter Web application that lets users capture meal photos for AI-powered nutrition analysis and includes real-time chat functionality between admin and customers/friends.
 
-## Video Walkthrough
-
-Here's a walkthrough of implemented user stories:
-
-[![Video Walkthrough](docs/thumbnail.png)](https://youtu.be/tN9bW3hQ4g8?si=GO3b_jR9YewA-Wah)
-
-**Click the image above to watch the full video walkthrough on YouTube**
-
 ## User Stories
 
 The following **required** functionality is completed:
@@ -65,6 +57,42 @@ Challenges encountered while building the app:
 - **Web Compatibility**: Ensuring camera/file upload works seamlessly in Flutter Web
 - **Real-time Chat**: Implementing session-based messaging without backend persistence
 - **Code Generation**: Managing JSON serialization with build_runner for complex nested models
+
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+[![Video Walkthrough](docs/thumbnail.png)](https://youtu.be/tN9bW3hQ4g8?si=GO3b_jR9YewA-Wah)
+
+**Click the image above to watch the full video walkthrough on YouTube**
+
+## Setup Instructions
+
+### Prerequisites
+- Flutter 3.22+ (currently using Flutter 3.8.1+)
+- A modern web browser (Chrome recommended)
+
+### Environment Configuration
+1. Copy the environment template:
+   ```bash
+   cp .env_sample .env
+   ```
+
+2. Update the `.env` file with your OpenAI API key:
+   ```
+   OPENAI_API_KEY=your_actual_openai_api_key_here
+   ```
+
+### Installation & Running
+1. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+
+2. Run the app in Chrome:
+   ```bash
+   flutter run -d chrome
+   ```
 
 ## Open-source libraries used
 
