@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../data/models/todo_model.dart';
-import '../domain/repositories/todo_repository.dart';
-import '../utils/loading_utils.dart';
+import '../../data/models/todo_model.dart';
+import '../../domain/repositories/todo_repository.dart';
+import '../../utils/loading_utils.dart';
 
 class HomeProvider extends ChangeNotifier {
   final TodoRepository _todoRepository;
