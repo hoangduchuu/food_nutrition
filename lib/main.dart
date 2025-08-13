@@ -7,6 +7,8 @@ import 'presentation/home/home_provider.dart';
 import 'presentation/home/home_screen.dart';
 import 'presentation/food_analysis/food_analysis_provider.dart';
 import 'presentation/food_analysis/food_analysis_screen.dart';
+import 'presentation/chat/chat_provider.dart';
+import 'presentation/chat/chat_screen.dart';
 
 void main() async {
   try {
@@ -37,6 +39,9 @@ class MyApp extends StatelessWidget {
           create: (context) => FoodAnalysisProvider(
             di.getIt(),
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChatProvider(),
         ),
       ],
       child: MaterialApp(
@@ -72,7 +77,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 
   final List<Widget> _screens = [
     const FoodAnalysisScreen(),
-    const HomeScreen(),
+    const ChatScreen(),
   ];
 
   @override
@@ -92,8 +97,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             label: 'Food Analysis',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.chat),
+            label: 'Chat',
           ),
         ],
       ),

@@ -6,6 +6,8 @@ import '../../data/repositories/food_analysis_repository_impl.dart';
 import '../../data/services/openai_food_analysis_service.dart';
 import '../../domain/repositories/todo_repository.dart';
 import '../../domain/repositories/food_analysis_repository.dart';
+import '../../domain/repositories/chat_repository.dart';
+import '../../data/repositories/websocket_chat_repository_impl.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -32,5 +34,9 @@ Future<void> initializeDependencies() async {
 
   getIt.registerLazySingleton<FoodAnalysisRepository>(
     () => FoodAnalysisRepositoryImpl(getIt<OpenAIFoodAnalysisService>()),
+  );
+
+  getIt.registerLazySingleton<ChatRepository>(
+    () => WebSocketChatRepositoryImpl(),
   );
 }
