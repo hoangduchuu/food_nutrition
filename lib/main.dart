@@ -9,6 +9,7 @@ import 'presentation/food_analysis/food_analysis_provider.dart';
 import 'presentation/food_analysis/food_analysis_screen.dart';
 import 'presentation/chat/chat_provider.dart';
 import 'presentation/chat/chat_screen.dart';
+import 'presentation/food_analysis/results_screen.dart';
 
 void main() async {
   try {
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: const MainNavigationScreen(),
+        routes: {
+          '/results': (context) => const ResultsScreen(),
+        },
         builder: EasyLoading.init(
           builder: (context, child) {
             return MediaQuery(

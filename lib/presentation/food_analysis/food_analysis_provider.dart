@@ -43,6 +43,8 @@ class FoodAnalysisProvider extends ChangeNotifier {
 
   void setSelectedImage(Uint8List imageBytes) {
     _selectedImageBytes = imageBytes;
+    _analysisResult = null;
+    _nutritionSummary = null;
     _clearError();
     notifyListeners();
   }
