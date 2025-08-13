@@ -4,9 +4,10 @@ import 'dart:convert';
 import '../../utils/loading_utils.dart';
 import 'food_analysis_provider.dart';
 import 'widgets/image_upload_widget.dart';
+import 'widgets/nutrition_summary_widget.dart';
 
 class FoodAnalysisScreen extends StatelessWidget {
-  const FoodAnalysisScreen({Key? key}) : super(key: key);
+  const FoodAnalysisScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,91 +15,125 @@ class FoodAnalysisScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Food Nutrition Analyzer'),
       ),
-      body: SafeArea(
-        child: Consumer<FoodAnalysisProvider>(
-          builder: (context, provider, child) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height - 
-                             MediaQuery.of(context).padding.top - 
-                             kToolbarHeight - 32,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Image Upload Section
-                    const ImageUploadWidget(),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Analysis Button
-                    if (provider.selectedImageBytes != null && !provider.isLoading)
-                      ElevatedButton.icon(
-                        onPressed: () => _analyzeImage(context, provider),
-                        icon: const Icon(Icons.analytics),
-                        label: const Text('Analyze Food'),
-                      ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Loading State
-                    if (provider.isLoading)
-                      const Center(
-                        child: Column(
+      body: Consumer<FoodAnalysisProvider>(
+        builder: (context, provider, child) {
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Image Upload Section
+                const ImageUploadWidget(),
+                
+                const SizedBox(height: 24),
+                
+                // Analysis Button
+                if (provider.selectedImageBytes != null && !provider.isLoading)
+                  ElevatedButton.icon(
+                    onPressed: () => _analyzeImage(context, provider),
+                    icon: const Icon(Icons.analytics),
+                    label: const Text('Analyze Food'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                  ),
+                
+                const SizedBox(height: 24),
+                
+                // Loading State
+                if (provider.isLoading)
+                  const Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 16),
+                        Text('Analyzing your food...'),
+                      ],
+                    ),
+                  ),
+                
+                // Error State
+                if (provider.error != null && !provider.isLoading)
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade50,
+                      border: Border.all(color: Colors.red.shade200),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
                           children: [
-                            CircularProgressIndicator(),
-                            SizedBox(height: 16),
-                            Text('Analyzing your food...'),
+                            Icon(Icons.error, color: Colors.red.shade600),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Analysis Failed',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Raw JSON Results
-                    if (provider.analysisResult != null) ...[
-                      const Text(
-                        'Raw JSON Response',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      Container(
-                        constraints: const BoxConstraints(maxHeight: 400),
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(8),
+                        const SizedBox(height: 8),
+                        Text(
+                          provider.error!,
+                          style: TextStyle(color: Colors.red.shade700),
                         ),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: _buildJsonLines(provider.analysisResult!),
-                          ),
-                        ),
+                      ],
+                    ),
+                  ),
+                
+                const SizedBox(height: 24),
+                
+                // Nutrition Summary
+                if (provider.nutritionSummary != null) ...[
+                  NutritionSummaryWidget(summary: provider.nutritionSummary!),
+                  const SizedBox(height: 24),
+                ],
+                
+                // Raw JSON Results
+                if (provider.analysisResult != null) ...[
+                  const Text(
+                    'Raw JSON Response',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  
+                  const SizedBox(height: 16),
+                  
+                  Container(
+                    constraints: const BoxConstraints(maxHeight: 400),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: _buildJsonLines(provider.analysisResult!),
                       ),
-                      
-                      const SizedBox(height: 24),
-                      
-                      // Clear Button
-                      OutlinedButton.icon(
-                        onPressed: provider.clearAnalysis,
-                        icon: const Icon(Icons.clear),
-                        label: const Text('Clear Analysis'),
-                      ),
-                    ],
-                    
-                    // Add some bottom padding to prevent overflow
-                    const SizedBox(height: 32),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Clear Button
+                  OutlinedButton.icon(
+                    onPressed: provider.clearAnalysis,
+                    icon: const Icon(Icons.clear),
+                    label: const Text('Clear Analysis'),
+                  ),
+                ],
+                
+                // Add bottom padding for better scrolling
+                const SizedBox(height: 50),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

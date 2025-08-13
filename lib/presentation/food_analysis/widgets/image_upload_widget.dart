@@ -5,7 +5,7 @@ import 'dart:html' as html;
 import '../food_analysis_provider.dart';
 
 class ImageUploadWidget extends StatelessWidget {
-  const ImageUploadWidget({Key? key}) : super(key: key);
+  const ImageUploadWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class ImageUploadWidget extends StatelessWidget {
             // Selected image preview
             if (provider.selectedImageBytes != null) ...[
               const SizedBox(height: 20),
-              Container(
+              SizedBox(
                 height: 300,
                 width: double.infinity,
                 child: Stack(
@@ -46,7 +46,7 @@ class ImageUploadWidget extends StatelessWidget {
                         onPressed: () => provider.clearAnalysis(),
                         icon: const Icon(Icons.close),
                         style: IconButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.8),
+                          backgroundColor: Colors.white.withValues(alpha: 0.8),
                           shape: const CircleBorder(),
                         ),
                       ),
@@ -72,8 +72,11 @@ class ImageUploadWidget extends StatelessWidget {
         final reader = html.FileReader();
         reader.onLoad.listen((event) {
           final bytes = reader.result as Uint8List;
-          final provider = context.read<FoodAnalysisProvider>();
-          provider.setSelectedImage(bytes);
+          // Use mounted check to avoid BuildContext async gap
+          if (context.mounted) {
+            final provider = context.read<FoodAnalysisProvider>();
+            provider.setSelectedImage(bytes);
+          }
         });
         reader.readAsArrayBuffer(file);
       }

@@ -12,16 +12,18 @@ void main() async {
   try {
     await dotenv.load(fileName: ".env");
   } catch (e) {
-    print('Warning: Could not load .env file: $e');
+    debugPrint('Warning: Could not load .env file: $e');
   }
   
   // Initialize dependency injection
   await di.initializeDependencies();
   
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -59,7 +61,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({Key? key}) : super(key: key);
+  const MainNavigationScreen({super.key});
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
